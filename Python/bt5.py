@@ -1,0 +1,10 @@
+a=14
+b=2
+c=4
+d=2
+print(b<a)
+print(b>a)
+print(b<=a)
+print(b>=a)
+print(b==d)
+print(b!=a)
