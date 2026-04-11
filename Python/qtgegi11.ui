@@ -1,0 +1,135 @@
+from PyQt6 import QtCore, QtGui, QtWidgets
+
+
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(1037, 838)
+
+        self.label = QtWidgets.QLabel(parent=Dialog)
+        self.label.setGeometry(QtCore.QRect(120, 40, 161, 51))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        font.setBold(True)
+        self.label.setFont(font)
+
+        self.label_2 = QtWidgets.QLabel(parent=Dialog)
+        self.label_2.setGeometry(QtCore.QRect(120, 105, 201, 21))
+
+        self.label_3 = QtWidgets.QLabel(parent=Dialog)
+        self.label_3.setGeometry(QtCore.QRect(120, 320, 161, 51))
+        font.setPointSize(20)
+        self.label_3.setFont(font)
+
+        # ===== NGÀY =====
+        self.Ngay = QtWidgets.QSpinBox(parent=Dialog)
+        self.Ngay.setGeometry(QtCore.QRect(120, 380, 81, 31))
+        self.Ngay.setRange(1, 31)  # FIX
+
+        self.Thang = QtWidgets.QSpinBox(parent=Dialog)
+        self.Thang.setGeometry(QtCore.QRect(340, 380, 111, 31))
+        self.Thang.setRange(1, 12)
+
+        self.Nam = QtWidgets.QSpinBox(parent=Dialog)
+        self.Nam.setGeometry(QtCore.QRect(540, 380, 100, 31))
+        self.Nam.setRange(1900, 2100)
+
+        # ===== GIỚI TÍNH =====
+        self.label_4 = QtWidgets.QLabel(parent=Dialog)
+        self.label_4.setGeometry(QtCore.QRect(120, 440, 161, 51))
+        self.label_4.setFont(font)
+
+        self.Nam_2 = QtWidgets.QRadioButton(parent=Dialog)
+        self.Nam_2.setGeometry(QtCore.QRect(130, 510, 95, 20))
+
+        self.Nu = QtWidgets.QRadioButton(parent=Dialog)
+        self.Nu.setGeometry(QtCore.QRect(420, 510, 95, 20))
+
+        # ===== ĐIỀU KHOẢN =====
+        self.textBrowser_5 = QtWidgets.QTextBrowser(parent=Dialog)
+        self.textBrowser_5.setGeometry(QtCore.QRect(120, 550, 256, 141))
+
+        # ===== CHECK =====
+        self.checkBox = QtWidgets.QCheckBox(parent=Dialog)
+        self.checkBox.setGeometry(QtCore.QRect(120, 730, 291, 20))
+
+        # ===== BUTTON =====
+        self.btnDangKy = QtWidgets.QPushButton(parent=Dialog)
+        self.btnDangKy.setGeometry(QtCore.QRect(332, 770, 121, 28))
+
+        # ===== INPUT =====
+        self.txtHo = QtWidgets.QLineEdit(parent=Dialog)
+        self.txtHo.setGeometry(QtCore.QRect(120, 140, 181, 31))
+
+        self.txtTen = QtWidgets.QLineEdit(parent=Dialog)
+        self.txtTen.setGeometry(QtCore.QRect(440, 140, 181, 31))
+
+        self.txtSDT = QtWidgets.QLineEdit(parent=Dialog)
+        self.txtSDT.setGeometry(QtCore.QRect(120, 190, 501, 31))
+
+        self.txtMk = QtWidgets.QLineEdit(parent=Dialog)
+        self.txtMk.setGeometry(QtCore.QRect(120, 250, 501, 31))
+        self.txtMk.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)  # FIX
+
+        # ===== TEXT =====
+        self.retranslateUi(Dialog)
+
+        # ===== FIX PLACEHOLDER =====
+        self.txtHo.setPlaceholderText("Họ")
+        self.txtTen.setPlaceholderText("Tên")
+        self.txtSDT.setPlaceholderText("Số điện thoại hoặc email")
+        self.txtMk.setPlaceholderText("Mật khẩu mới")
+
+        # ===== EVENT =====
+        self.btnDangKy.clicked.connect(self.dangky)
+
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+    def retranslateUi(self, Dialog):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog.setWindowTitle("Đăng ký")
+
+        self.label.setText("Đăng ký")
+        self.label_2.setText("Nhanh chóng và dễ dàng")
+        self.label_3.setText("Ngày sinh")
+        self.label_4.setText("Giới tính")
+
+        self.Thang.setPrefix("Tháng ")
+        self.Nam_2.setText("Nam")
+        self.Nu.setText("Nữ")
+
+        self.textBrowser_5.setHtml("""
+        <p>Bằng cách nhấp vào Đăng ký, bạn đồng ý với điều khoản</p>
+        <p>Chính sách dữ liệu và cookie của chúng tôi.</p>
+        <p>Bạn có thể nhận thông báo qua SMS.</p>
+        """)
+
+        self.checkBox.setText("Tôi đồng ý với các điều khoản trên")
+        self.btnDangKy.setText("Đăng ký")
+
+    # ===== XỬ LÝ =====
+    def dangky(self):
+        ho = self.txtHo.text()
+        ten = self.txtTen.text()
+        sdt = self.txtSDT.text()
+        mk = self.txtMk.text()
+
+        if not ho or not ten or not sdt or not mk:
+            QtWidgets.QMessageBox.warning(None, "Lỗi", "Nhập đầy đủ thông tin!")
+            return
+
+        if not self.checkBox.isChecked():
+            QtWidgets.QMessageBox.warning(None, "Lỗi", "Chưa đồng ý điều khoản!")
+            return
+
+        QtWidgets.QMessageBox.information(None, "OK", f"Đăng ký: {ho} {ten}")
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec())
